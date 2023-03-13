@@ -1,0 +1,26 @@
+{
+    // 使用 IntelliSense 了解相关属性。 
+    // 悬停以查看现有属性的描述。
+    // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: 当前文件",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "args": ["--train_local", "0", "--train_slam", "0", "--load_global", "pretrained_models/model_best1e-4.global.1298", "--load_local", "pretrained_models/model_best.local", "--load_slam", "pretrained_models/model_best.slam", "--exp_name", "originals_test_new", "--max_episode_length", "180", "--num_global_steps", "18", "--num_local_steps", "10", "--ppo_epoch", "8", "--use_recurrent_global", "1", "--global_hidden_size", "7"],
+        }
+    ]
+}
+
+// "args": [
+//     "--eval", "1", "--auto_gpu_config", "0",
+//     "--num_processes", "1", "--num_episodes", "1",
+//     "--num_processes_per_gpu", "5", "--num_local_steps", "10",
+//     "--load_global", "pretrained_models/model_best.global",
+//     "--train_global", "0", "--load_local", "pretrained_models/model_best.local", "--train_local", "0", "--load_slam", "pretrained_models/model_best.slam", "--train_slam", "0",
+//     "--print_images", "1", "-d", "4_result", "--exp_name", "Adrian_Tx_10"
+//     ],
