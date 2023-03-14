@@ -930,13 +930,13 @@ def main():
                 """
                 # Training MIng
                 # """
-                aoa2 = global_goals[0][0]
-                step_d = global_goals[0][1]
-                # """
-                # Verify Ming
-                # """
-                # aoa2 = global_input_wireless[0].item()
-                # step_d = 12
+                # aoa2 = global_goals[0][0]
+                # step_d = global_goals[0][1]
+                #"""
+                #Verify Ming
+                #"""
+                aoa2 = global_input_wireless[0].item()
+                step_d = 12
                 if aoa2>=0 and aoa2<=90:
                     x_lc = np.cos(np.deg2rad(aoa2))
                     y_lc = -np.sin(np.deg2rad(aoa2))
