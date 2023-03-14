@@ -554,8 +554,8 @@ class Exploration_Env(habitat.RLEnv):
                 ## Please place the TX location here:
                 # for example: Adrain map TX-10: x_y = [9.3,20.45]
                 # x_y = [14.3,14.25] # TX-6
-                x_y = [10.2,6.45] #Tx-4
-                # x_y = [12.3,2] # TX-10 
+                # x_y = [10.2,6.45] #Tx-4
+                x_y = [12.3,2] # TX-10 
 
                 tx_gt = [int((x_y[0] * 100 / args.map_resolution) - gy1),
                          240 - int((x_y[1] * 100 / args.map_resolution) - gx1)]

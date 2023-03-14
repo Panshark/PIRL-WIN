@@ -137,3 +137,6 @@ python main_wireless_mode_March12_habitai_done.py --train_local 0 --train_slam 0
 
 # Tao:  git commit example
 git commit -m "Fix the bug" --author="Tao Li"
+
+# Xiangbing
+python main_wireless_mode_March13_done_new.py --train_local 0 --train_slam 0 --load_local pretrained_models/model_best.local --load_slam pretrained_models/model_best.slam --exp_name March13_10_lr1e-4 --max_episode_length 180 --num_global_steps 6 --num_local_steps 10 --ppo_epoch 8 --num_mini_batch 1 --global_hidden_size 7 --use_recurrent_global 1 --global_lr 1e-4 --seed 42
