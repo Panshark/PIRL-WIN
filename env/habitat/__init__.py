@@ -40,7 +40,8 @@ def construct_envs(args):
     scenes = PointNavDatasetV1.get_scenes_to_load(basic_config.DATASET)
 
     # Ming Feb28
-    scenes = ['Bowlus']
+    # scenes = ['Bowlus']
+    scenes = ['Adrian']
     print(f"LOG : only working on {scenes}")
 
     if len(scenes) > 0:

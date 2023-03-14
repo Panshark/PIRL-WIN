@@ -316,8 +316,9 @@ def main():
     map_data_dir = "{}data/".format(args.map_location)
     map_goal_dir = "{}goal/".format(args.map_location)
     
-    map_name = 'Bowlus'
-    tx_num = '10'
+    # map_name = 'Bowlus'
+    map_name = 'Adrian'
+    tx_num = '7'
     map_data_df, map_goal, max_snr = load_wireless_data_goal(map_data_dir, map_goal_dir,
                                                  map_name, tx_num)
     indoor_point_idx = np.array(map_data_df[['rxPosInd_1', 'rxPosInd_2']].values)
@@ -926,16 +927,16 @@ def main():
                 o0, o1, _ = origins[0]
                 o0 = o0/0.05
                 o1 = o1/0.05
+                """
+                # Training MIng
                 # """
-                # # Training MIng
-                # # """
-                # aoa2 = global_goals[0][0]
-                # step_d = global_goals[0][1]
-                """
-                Verify Ming
-                """
-                aoa2 = global_input_wireless[0].item()
-                step_d = 12
+                aoa2 = global_goals[0][0]
+                step_d = global_goals[0][1]
+                # """
+                # Verify Ming
+                # """
+                # aoa2 = global_input_wireless[0].item()
+                # step_d = 12
                 if aoa2>=0 and aoa2<=90:
                     x_lc = np.cos(np.deg2rad(aoa2))
                     y_lc = -np.sin(np.deg2rad(aoa2))
