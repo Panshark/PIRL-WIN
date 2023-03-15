@@ -179,6 +179,9 @@ def get_args():
                         help='number of warm up episodes (default: 10)')
     parser.add_argument('--window_size', type=int, default=10,
                         help='number of mean reward window size (default: 10)')
+    parser.add_argument('--verify', type=int, default=0,
+                        help="""0: Train model (default: 0)
+                                1: Verify the map data""")
 
     # parse arguments
     args = parser.parse_args()
