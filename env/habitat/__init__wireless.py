@@ -41,7 +41,7 @@ def construct_envs(args):
 
 
     ## Please place the name of map here
-    scenes = ['Adrian'] # for example: scenes = ['Adrian']
+    scenes = ['Bowlus'] # for example: scenes = ['Adrian']
     print('Hi', scenes)
     ##
 

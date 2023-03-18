@@ -307,6 +307,50 @@ def Reward_function_new(curr_loc,
 
     return reward
 
+def Reward_function_Adrian(curr_loc,
+                        map_goal, local_dist,
+        prev_obs, obs, policy_output_ang, prev_link_state, link_state, max_power, flag_done = False):
+    
+    alpha = 0
+    beta = 0
+    gamma = 0
+
+    reward = 0
+    flag_done_reward = 0
+
+    dist = np.linalg.norm(np.array([curr_loc[0], curr_loc[1]]) 
+                - np.array([map_goal[0], map_goal[1]]))
+    logging.info(f"Log: Curr distence is: {dist}")
+
+    angle_diff = abs(prev_obs[0]-policy_output_ang)
+    # obs[15] is the total power, which needs to be scaled 
+    minus_power =  obs[15]-max_power
+    if angle_diff > 180:
+        angle_diff = 360 - angle_diff
+
+    # link_state punishment
+    link_punish = 100 * min((link_state-prev_link_state), 0)
+
+    angle_reward = 2 * -angle_diff
+    dist_reward = 600 * np.exp(-0.1*dist)
+    # minus_power_reward = 4 * minus_power
+
+    if link_state == 4:
+        alpha = 1
+        beta = 1
+    elif link_state == 3:
+        alpha = 2
+        beta = 0.5
+    else:
+        gamma = 16
+    
+    reward += alpha * angle_reward + beta * dist_reward + gamma * minus_power
+    
+    logging.info(f"ROBOT CAR's dist: {local_dist}")
+    logging.info(f"Log: power {gamma * minus_power}; dist {beta * dist_reward}; angle {alpha * angle_reward}; link_punish {link_punish}, alpha {alpha}, beta {beta}, gamma {gamma} rewards")
+
+    return reward
+
 def main():
     # Setup Logging
     log_dir = "/data/y2lchong/{}/models/{}/".format(args.dump_location, args.exp_name)
@@ -318,7 +362,7 @@ def main():
     
     # map_name = 'Bowlus'
     map_name = 'Adrian'
-    tx_num = '7'
+    tx_num = '8'
     map_data_df, map_goal, max_snr = load_wireless_data_goal(map_data_dir, map_goal_dir,
                                                  map_name, tx_num)
     indoor_point_idx = np.array(map_data_df[['rxPosInd_1', 'rxPosInd_2']].values)
@@ -984,9 +1028,9 @@ def main():
                     logging.info(f"LOG: early dist = {dist}, flag = {flag_done}")
                 #------------------------------------------------------------------------March12
 
-                temp_reward = Reward_function_new(
+                temp_reward = Reward_function_Adrian(
                     [x_gc_prev, y_gc_prev],
-                    map_goal, dist, prev_obs, global_input_wireless, policy_output_ang_prev, previous_l_state, l_state, max_snr, k = 1, gamma=2, flag_done = flag_done)
+                    map_goal, dist, prev_obs, global_input_wireless, policy_output_ang_prev, previous_l_state, l_state, max_snr, flag_done = flag_done)
                 
                 # Lag
                 logging.info(f"|||------------------------------------------------------------------------------------------------------------|||")
