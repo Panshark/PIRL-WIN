@@ -233,6 +233,46 @@ def read_wireless_measure(map_data, curr_cln, curr_row,
     return wireless_obs, link_state, temp
 
 
+def read_wireless_measure_simple_input(map_data, curr_cln, curr_row, 
+                    map_resolution, indoor_point_idx, prev_obs = None):
+    """
+    Only first path input
+    """
+
+    # the features used as the 'obs'
+    wireless_features_columns = ['aoaAzResult_1','aodAzResult_1',
+        'snrResult_1','total_snr', 'linkState'] # 5
+    
+    r = (curr_row * 100.0/args.map_resolution + 2) / 3
+    c = (curr_cln * 100.0/args.map_resolution + 2) / 3
+    wireless_obs_df = map_data.loc[(map_data['rxPosInd_1'] == round(r)) & 
+                                (map_data['rxPosInd_2'] == round(c))]
+    if len(wireless_obs_df['lineIndex'].values) == 0:
+        # point not find, round to another points
+        diff = np.sum(np.abs(indoor_point_idx - np.array([r, c])), axis = 1)
+        idx = np.argmin(diff)
+        temp = map_data.iloc[idx]
+        link_state = int(temp['linkState'])
+        temp = temp[wireless_features_columns].to_numpy() # (5,)
+    else:
+        temp = wireless_obs_df[wireless_features_columns].to_numpy()[0] # (5,)
+        link_state = int(wireless_obs_df['linkState'].values)
+    wireless_obs = torch.from_numpy(temp)
+
+    if link_state == 1:
+        link_state = 4
+    elif link_state == 2:
+        link_state = 3
+    elif link_state == 3:
+        link_state = 2
+    else:
+        link_state = 1
+    print(f'Log: wireless_obs {wireless_obs}')
+    logging.info(f'Log: wireless_obs {wireless_obs}')
+    print(f'Log: Current SNR {round(wireless_obs[-1].item(), 2)}, Angle {wireless_obs[0].item()}, LS {link_state}')
+    return wireless_obs, link_state, temp
+
+
 def Reward_funciton_tao(curr_loc,
                         map_goal,
         obs, policy_output_ang, link_state, max_power, k = 1, gamma=2):
@@ -372,8 +412,8 @@ def Reward_function_march18_Ming(curr_loc,
     logging.info(f"Log: Curr distence is: {dist}")
 
     angle_diff = abs(prev_obs[0]-policy_output_ang)
-    # obs[15] is the total power, which needs to be scaled 
-    minus_power =  obs[15]-max_power
+
+    minus_power =  obs[3]-max_power
     if angle_diff > 180:
         angle_diff = 360 - angle_diff
 
@@ -537,7 +577,7 @@ def main():
                             torch.from_numpy(origins[e]).to(device).float()
 
     init_map_and_pose()
-    wireless_state_shape = [17]
+    wireless_state_shape = [5]
     # Global policy observation space
     g_observation_space = gym.spaces.Box(0, 1,
                                          (wireless_state_shape), dtype='uint8')
@@ -648,13 +688,13 @@ def main():
     # read wireless data for current agent location
     # Ming Feb 28th 2023
     start_cj, start_rj, _, _, _, _, _ = planner_pose_inputs[0]
-    global_input_wireless, l_state, _ = read_wireless_measure(map_data_df,
+    global_input_wireless, l_state, _ = read_wireless_measure_simple_input(map_data_df,
                                                   start_cj, start_rj, 
                                                   args.map_resolution, 
                                                   indoor_point_idx,
                                                   None)
     prev_obs = global_input_wireless
-    assert global_input_wireless.shape == torch.Size([17]), "Wrong wirelss data"
+    assert global_input_wireless.shape == torch.Size([5]), "Wrong wirelss data"
     #
     
     g_rollouts.obs[0].copy_(global_input_wireless)
@@ -902,7 +942,7 @@ def main():
                 logging.info(f'Log: pre read pre_obs: {prev_obs}')
                 logging.info(f'LOG: pre read loction: {[start_cj, start_rj]}')
                 previous_l_state = l_state
-                global_input_wireless, l_state, _= read_wireless_measure(map_data_df,
+                global_input_wireless, l_state, _= read_wireless_measure_simple_input(map_data_df,
                                                             start_cj, start_rj, 
                                                             args.map_resolution, 
                                                             indoor_point_idx,
@@ -914,7 +954,7 @@ def main():
                 print(f"LOG: Link State {l_state}")
                 logging.info(f"LOG: Link State {l_state}")
 
-                assert global_input_wireless.shape == torch.Size([17]), "Wrong wirelss data"
+                assert global_input_wireless.shape == torch.Size([5]), "Wrong wirelss data"
 
                 # March 4 Ming
                 # Get exploration reward and metrics
