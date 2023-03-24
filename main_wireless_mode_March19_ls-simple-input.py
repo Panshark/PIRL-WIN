@@ -240,8 +240,11 @@ def read_wireless_measure_simple_input(map_data, curr_cln, curr_row,
     """
 
     # the features used as the 'obs'
-    wireless_features_columns = ['aoaAzResult_1','aodAzResult_1',
-        'snrResult_1','total_snr', 'linkState'] # 5
+    wireless_features_columns = [
+        'aoaAzResult_1','aodAzResult_1','snrResult_1',
+        'aoaAzResult_2','aodAzResult_2','snrResult_2',
+        'aoaAzResult_3','aodAzResult_3','snrResult_3',
+        'total_snr', 'linkState'] # 11
     
     r = (curr_row * 100.0/args.map_resolution + 2) / 3
     c = (curr_cln * 100.0/args.map_resolution + 2) / 3
@@ -273,124 +276,6 @@ def read_wireless_measure_simple_input(map_data, curr_cln, curr_row,
     return wireless_obs, link_state, temp
 
 
-def Reward_funciton_tao(curr_loc,
-                        map_goal,
-        obs, policy_output_ang, link_state, max_power, k = 1, gamma=2):
-    
-    dist = np.linalg.norm(np.array([curr_loc[0], curr_loc[1]]) 
-                - np.array([map_goal[0], map_goal[1]]))
-    logging.info(f"Log: Curr distence is: {dist}")
-    if dist <= 3:
-        return 1000
-
-    # obs: 1*16, target_loc: 1*2 , agent_loc: 1*2, poliocy_output: 1*2, link_state:1*1, max_power: the upper bound of the total power, use 55 here
-    # obs[0] is the arrival angle;  policy_output[0] is the predicted angle
-    angle_diff = abs(obs[0]-policy_output_ang)
-    # obs[15] is the total power, which needs to be scaled 
-    minus_power =  obs[15]-max_power
-    if angle_diff > 180:
-        angle_diff = 360 - angle_diff
-
-    if link_state == 4: 
-    # if the agent is within LOS
-        reward = -angle_diff
-
-    if link_state == 3:
-    # if the agent is within first-order of NLOS
-        reward = -angle_diff + k*minus_power - 180
-
-    if link_state <= 2:
-    # if the agent is within high-order of NLOS
-        reward = gamma*minus_power - 360
-
-    return reward
-
-def Reward_function_new(curr_loc,
-                        map_goal, local_dist,
-        prev_obs, obs, policy_output_ang, prev_link_state, link_state, max_power, k = 1, gamma=2, flag_done = False):
-    
-    reward = 0
-    flag_done_reward = 0
-
-    dist = np.linalg.norm(np.array([curr_loc[0], curr_loc[1]]) 
-                - np.array([map_goal[0], map_goal[1]]))
-    logging.info(f"Log: Curr distence is: {dist}")
-
-    angle_diff = abs(prev_obs[0]-policy_output_ang)
-    # obs[15] is the total power, which needs to be scaled 
-    minus_power =  obs[15]-max_power
-    if angle_diff > 180:
-        angle_diff = 360 - angle_diff
-
-    # define the power reward
-    minus_power_reward = 2 * (5-link_state) * minus_power
-
-    # define the dist reward
-    dist_reward = 200 * np.exp(-0.05*dist)
-
-    # define the angle reward
-    angle_reward = 0.1 * -angle_diff * 0.24 * np.exp(0.8*link_state)
-
-    # link_state punishment
-    link_punish = 100 * min((link_state-prev_link_state), 0)
-
-    # local_dist_reward
-    local_dist_reward = max(15-dist, 0) * 100
-
-    # early stop reward
-    # if flag_done:
-    #     flag_done_reward = 500
-
-    reward += k*minus_power_reward + dist_reward + gamma*angle_reward + link_punish + local_dist_reward + flag_done_reward
-
-    logging.info(f"Log: power {minus_power_reward}; dist {dist_reward}; angle {angle_reward}; link_punish {link_punish}, local_dist_reward {local_dist_reward}, early stop {flag_done_reward}, rewards")
-
-    return reward
-
-def Reward_function_Adrian(curr_loc,
-                        map_goal, local_dist,
-        prev_obs, obs, policy_output_ang, prev_link_state, link_state, max_power, flag_done = False):
-    
-    alpha = 0
-    beta = 0
-    gamma = 0
-
-    reward = 0
-    flag_done_reward = 0
-
-    dist = np.linalg.norm(np.array([curr_loc[0], curr_loc[1]]) 
-                - np.array([map_goal[0], map_goal[1]]))
-    logging.info(f"Log: Curr distence is: {dist}")
-
-    angle_diff = abs(prev_obs[0]-policy_output_ang)
-    # obs[15] is the total power, which needs to be scaled 
-    minus_power =  obs[15]-max_power
-    if angle_diff > 180:
-        angle_diff = 360 - angle_diff
-
-    # link_state punishment
-    link_punish = 100 * min((link_state-prev_link_state), 0)
-
-    angle_reward = 2 * -angle_diff
-    dist_reward = 600 * np.exp(-0.1*dist)
-    # minus_power_reward = 4 * minus_power
-
-    if link_state == 4:
-        alpha = 1
-        beta = 1
-    elif link_state == 3:
-        alpha = 2
-        beta = 0.5
-    else:
-        gamma = 16
-    
-    reward += alpha * angle_reward + beta * dist_reward + gamma * minus_power
-    
-    logging.info(f"ROBOT CAR's dist: {local_dist}")
-    logging.info(f"Log: power {gamma * minus_power}; dist {beta * dist_reward}; angle {alpha * angle_reward}; link_punish {link_punish}, alpha {alpha}, beta {beta}, gamma {gamma} rewards")
-
-    return reward
-
 
 def Reward_function_march18_Ming(curr_loc,
                         map_goal, local_dist,
@@ -413,7 +298,7 @@ def Reward_function_march18_Ming(curr_loc,
 
     angle_diff = abs(prev_obs[0]-policy_output_ang)
 
-    minus_power =  obs[3]-max_power
+    minus_power =  obs[9]-max_power
     if angle_diff > 180:
         angle_diff = 360 - angle_diff
 
@@ -577,7 +462,7 @@ def main():
                             torch.from_numpy(origins[e]).to(device).float()
 
     init_map_and_pose()
-    wireless_state_shape = [5]
+    wireless_state_shape = [11]
     # Global policy observation space
     g_observation_space = gym.spaces.Box(0, 1,
                                          (wireless_state_shape), dtype='uint8')
@@ -694,7 +579,7 @@ def main():
                                                   indoor_point_idx,
                                                   None)
     prev_obs = global_input_wireless
-    assert global_input_wireless.shape == torch.Size([5]), "Wrong wirelss data"
+    assert global_input_wireless.shape == torch.Size([11]), "Wrong wirelss data"
     #
     
     g_rollouts.obs[0].copy_(global_input_wireless)
@@ -954,7 +839,7 @@ def main():
                 print(f"LOG: Link State {l_state}")
                 logging.info(f"LOG: Link State {l_state}")
 
-                assert global_input_wireless.shape == torch.Size([5]), "Wrong wirelss data"
+                assert global_input_wireless.shape == torch.Size([11]), "Wrong wirelss data"
 
                 # March 4 Ming
                 # Get exploration reward and metrics
@@ -972,7 +857,7 @@ def main():
                 logging.info(f"LOG: dist = {dist}")
                 # March 12 Ming stop reward ++ 500
                 if (dist<10):
-                    g_reward += 10
+                    g_reward += 180
                     logging.info(f"LOG: DONE Reward Added !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
                 if args.eval:
                     g_reward = g_reward*1.0 # Evaluation reward

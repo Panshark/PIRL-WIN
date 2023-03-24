@@ -1,4 +1,4 @@
-# model-march19-input5or8.py
+# model-march19-input11-cmpx.py
 
 import torch
 import torch.nn as nn
@@ -16,8 +16,12 @@ class Wireless_Policy(NNBase):
                                             hidden_size)
 
         self.main = nn.Sequential(
-            nn.Linear(input_shape[0], 5), # 8 or 5 - 5
-            nn.ReLU(),
+            # nn.Linear(input_shape[0], 5), # 8 - 5
+            # nn.ReLU(),
+            nn.Linear(input_shape[0], 8), # 11 - 8
+            nn.LeakyReLU(),
+            nn.Linear(8, 5), # 8 - 5
+            nn.LeakyReLU(),
             Flatten()
         )
 

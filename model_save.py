@@ -1,5 +1,3 @@
-# model-march19-simple-input.py
-
 import torch
 import torch.nn as nn
 from torch.nn import functional as F
@@ -11,27 +9,42 @@ from utils.model import get_grid, ChannelPool, Flatten, NNBase
 
 # Global Wireless Policy model code
 class Wireless_Policy(NNBase):
-    def __init__(self, input_shape, recurrent=False, hidden_size=3, downscaling=1, using_extras=False):
+    def __init__(self, input_shape, recurrent=False, hidden_size=7, downscaling=1, using_extras=False):
         super(Wireless_Policy, self).__init__(recurrent, hidden_size,
                                             hidden_size)
 
+
         self.main = nn.Sequential(
-            nn.Linear(input_shape[0], 5), # 5 - 5
+            nn.Linear(input_shape[0], 13),
             nn.ReLU(),
             Flatten()
         )
-
-        self.linear1 = nn.Linear(5, hidden_size)
+        
+        # TODO: hardcord of size
+        if using_extras:
+            self.linear1 = nn.Linear(input_shape[0]+8, hidden_size)
+            print("Log: Not Here **************************************************")
+        else:
+            # self.linear1 = nn.Linear(input_shape[0], hidden_size)
+            self.linear1 = nn.Linear(13, hidden_size)
         
         if recurrent:
-            self.linear2 = nn.Linear(hidden_size, 3)
+            self.linear2 = nn.Linear(hidden_size, 7)
         self.critic_linear = nn.Linear(hidden_size, 1)
-
+        # TODO: Fix extra
+        if using_extras:
+            print("Log: Not Here **************************************************")
+            self.orientation_emb = nn.Embedding(72, 8)
         self.train()
 
     def forward(self, inputs, rnn_hxs, masks, extras = None):
-
+        # print(input)
+        # print(f'Log: Input size is {inputs.shape}')
         x = self.main(inputs)
+        if extras is not None:
+            print("Log: Not Here **************************************************")
+            orientation_emb = self.orientation_emb(extras).squeeze(1)
+            x = torch.cat((x, orientation_emb), 1)
 
         x = nn.ReLU()(self.linear1(x))
         if self.is_recurrent:
