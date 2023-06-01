@@ -41,7 +41,8 @@ def construct_envs(args):
 
     # Ming Feb28
     # scenes = ['Bowlus']
-    scenes = ['Adrian']
+    # scenes = ['Adrian']
+    scenes = ['Woonsocket']
     print(f"LOG : only working on {scenes}")
 
     if len(scenes) > 0:

@@ -530,7 +530,7 @@ class Exploration_Env(habitat.RLEnv):
         self.relative_angle = relative_angle
 
         if args.visualize or args.print_images:
-            dump_dir = "/data/y2lchong/{}/dump/{}/".format(args.dump_location,
+            dump_dir = "/data3/y2lchong/{}/dump/{}/".format(args.dump_location,
                                                 args.exp_name)
             ep_dir = '{}/episodes/{}/{}/'.format(
                             dump_dir, self.rank+1, self.episode_no)
@@ -562,7 +562,7 @@ class Exploration_Env(habitat.RLEnv):
                 # x_y = [14.5,14.35] #Tx-5
                 # x_y = [15.85,15.25] # TX-6
                 # x_y = [10.6,14] # TX-7
-                x_y = [14,17.1] # TX-8
+                # x_y = [14,17.1] # TX-8
                 # x_y = [12.95,16.2] # TX-9
                 # x_y = [9.3,20.45] # TX-10 
                 # Adrain ===============================================
@@ -580,6 +580,10 @@ class Exploration_Env(habitat.RLEnv):
                 # x_y = [9,6.9] # TX-9
                 # x_y = [12.3,2] # TX-10 
                 # Bowlus END==================================================
+
+                # Woonsocket ==
+                x_y = [10.7,8.55] #Tx-6
+
 
                 tx_gt = [int((x_y[0] * 100 / args.map_resolution) - gy1),
                          240 - int((x_y[1] * 100 / args.map_resolution) - gx1)]

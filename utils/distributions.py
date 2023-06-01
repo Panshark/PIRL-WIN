@@ -48,6 +48,9 @@ class DiagGaussian(nn.Module):
         super(DiagGaussian, self).__init__()
 
         self.fc_mean = nn.Linear(num_inputs, num_outputs)
+        # print(self.fc_mean.bias.data,"Origin---------------------------")
+        # self.fc_mean.bias.data.fill_(-18.0)
+        # print(self.fc_mean.bias.data,"After---------------------------")
         self.logstd = AddBias(torch.zeros(num_outputs))
 
     def forward(self, x):
