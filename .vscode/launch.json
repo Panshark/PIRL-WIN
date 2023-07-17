@@ -11,7 +11,7 @@
             "program": "${file}",
             "console": "integratedTerminal",
             "justMyCode": true,
-            "args": ["--train_local", "0", "--train_slam", "0", "--load_global", "pretrained_models/model_best1e-4.global.1298", "--load_local", "pretrained_models/model_best.local", "--load_slam", "pretrained_models/model_best.slam", "--exp_name", "originals_test_new", "--max_episode_length", "180", "--num_global_steps", "18", "--num_local_steps", "10", "--ppo_epoch", "8", "--use_recurrent_global", "1", "--global_hidden_size", "7"],
+            "args": ["--train_global", "0", "--train_slam", "0", "--load_slam", "pretrained_models/model_best.slam", "--exp_name", "originals_test_new", "--max_episode_length", "180", "--num_global_steps", "18", "--num_local_steps", "10", "--ppo_epoch", "8", "--use_recurrent_global", "1", "--global_hidden_size", "3"],
         }
     ]
 }

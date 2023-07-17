@@ -143,5 +143,3 @@ python main_wireless_mode_March13_done_new.py --train_local 0 --train_slam 0 --l
 
 # switch to verify mode
 git status 
-# if on the branch verify, then done; else 
-git checkout verify 

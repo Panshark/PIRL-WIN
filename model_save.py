@@ -1,5 +1,3 @@
-# model-march19-input5or8.py
-
 import torch
 import torch.nn as nn
 from torch.nn import functional as F
@@ -11,29 +9,42 @@ from utils.model import get_grid, ChannelPool, Flatten, NNBase
 
 # Global Wireless Policy model code
 class Wireless_Policy(NNBase):
-    def __init__(self, input_shape, recurrent=False, hidden_size=3, downscaling=1, using_extras=False):
+    def __init__(self, input_shape, recurrent=False, hidden_size=7, downscaling=1, using_extras=False):
         super(Wireless_Policy, self).__init__(recurrent, hidden_size,
                                             hidden_size)
 
+
         self.main = nn.Sequential(
-            nn.Linear(input_shape[0], 9), # 17 - 9
+            nn.Linear(input_shape[0], 13),
             nn.ReLU(),
-            nn.Linear(9, 5), # 8 or 5 - 5
-            nn.ReLU(), #complex
             Flatten()
         )
-        self.linear1 = nn.Linear(5, hidden_size)
-        # self.linear1 = nn.Linear(4, hidden_size) # 4 - 3 complex
+        
+        # TODO: hardcord of size
+        if using_extras:
+            self.linear1 = nn.Linear(input_shape[0]+8, hidden_size)
+            print("Log: Not Here **************************************************")
+        else:
+            # self.linear1 = nn.Linear(input_shape[0], hidden_size)
+            self.linear1 = nn.Linear(13, hidden_size)
         
         if recurrent:
-            self.linear2 = nn.Linear(hidden_size, 3) # 3-3
+            self.linear2 = nn.Linear(hidden_size, 7)
         self.critic_linear = nn.Linear(hidden_size, 1)
-
+        # TODO: Fix extra
+        if using_extras:
+            print("Log: Not Here **************************************************")
+            self.orientation_emb = nn.Embedding(72, 8)
         self.train()
 
     def forward(self, inputs, rnn_hxs, masks, extras = None):
-
+        # print(input)
+        # print(f'Log: Input size is {inputs.shape}')
         x = self.main(inputs)
+        if extras is not None:
+            print("Log: Not Here **************************************************")
+            orientation_emb = self.orientation_emb(extras).squeeze(1)
+            x = torch.cat((x, orientation_emb), 1)
 
         x = nn.ReLU()(self.linear1(x))
         if self.is_recurrent:
@@ -414,86 +425,6 @@ class Local_IL_Policy(NNBase):
         action = torch.argmax(x, dim=1)
 
         return action, x, rnn_hxs
-    
-# Local Policy model code
-class E2E_Policy(NNBase):
-
-    def __init__(self, input_shape, input_shape_w, num_actions, recurrent=False,
-                 hidden_size=512, deterministic=False):
-
-        super(E2E_Policy, self).__init__(recurrent, hidden_size,
-                                              hidden_size)
-
-        self.main = nn.Sequential(
-            nn.Linear(input_shape_w[0], 8, dtype=torch.float), # 17 - 8
-            nn.ReLU(),
-            Flatten()
-        )
-
-        self.deterministic = deterministic
-        self.dropout = 0.5
-
-        resnet = models.resnet18(pretrained=True)
-        self.resnet_l5 = nn.Sequential(*list(resnet.children())[0:8])
-
-        # Extra convolution layer
-        self.conv = nn.Sequential(*filter(bool, [
-            nn.Conv2d(512, 64, (1, 1), stride=(1, 1)),
-            nn.ReLU()
-        ]))
-
-        # convolution output size
-        input_test = torch.randn(1, 3, input_shape[1], input_shape[2])
-        conv_output = self.conv(self.resnet_l5(input_test))
-        self.conv_output_size = conv_output.view(-1).size(0)
-
-        # projection layers
-        self.proj1 = nn.Linear(self.conv_output_size, hidden_size - 24)
-        if self.dropout > 0:
-            self.dropout1 = nn.Dropout(self.dropout)
-        self.linear = nn.Linear(hidden_size, hidden_size)
-
-        # Short-term goal embedding layers
-        self.embedding_angle = nn.Embedding(72, 8)
-        self.embedding_dist = nn.Embedding(24, 8)
-
-        # Policy linear layer
-        self.policy_linear = nn.Linear(hidden_size, num_actions)
-
-        self.train()
-
-    def forward(self, rgb, wireless_input, rnn_hxs, masks, extras):
-        if self.deterministic:
-            x = torch.zeros(extras.size(0), 3)
-            for i, stg in enumerate(extras):
-                if stg[0] < 3 or stg[0] > 68:
-                    x[i] = torch.tensor([0.0, 0.0, 1.0])
-                elif stg[0] < 36:
-                    x[i] = torch.tensor([0.0, 1.0, 0.0])
-                else:
-                    x[i] = torch.tensor([1.0, 0.0, 0.0])
-        else:
-            resnet_output = self.resnet_l5(rgb[:, :3, :, :])
-            conv_output = self.conv(resnet_output)
-
-            proj1 = nn.ReLU()(self.proj1(conv_output.view(
-                -1, self.conv_output_size)))
-            if self.dropout > 0:
-                proj1 = self.dropout1(proj1)
-
-            angle_emb = self.embedding_angle(extras[:, 0]).view(-1, 8)
-            wireless_emb = self.main(wireless_input).view(-1, 8)
-            dist_emb = self.embedding_dist(extras[:, 1]).view(-1, 8)
-            x = torch.cat((proj1, angle_emb, dist_emb, wireless_emb), 1)
-            x = nn.ReLU()(self.linear(x))
-            if self.is_recurrent:
-                x, rnn_hxs = self._forward_gru(x, rnn_hxs, masks)
-
-            x = nn.Softmax(dim=1)(self.policy_linear(x))
-
-        action = torch.argmax(x, dim=1)
-
-        return action, x, rnn_hxs
 
 
 # https://github.com/ikostrikov/pytorch-a2c-ppo-acktr-gail/blob/master/a2c_ppo_acktr/model.py#L15
@@ -503,135 +434,6 @@ class RL_Policy(nn.Module):
                  base_kwargs=None):
 
         super(RL_Policy, self).__init__()
-        if base_kwargs is None:
-            base_kwargs = {}
-
-        if model_type == 0:
-            self.network = Global_Policy(obs_shape, **base_kwargs)
-        elif model_type ==1:
-            self.network = Wireless_Policy(obs_shape, **base_kwargs)
-        else:
-            raise NotImplementedError
-
-        if action_space.__class__.__name__ == "Discrete":
-            num_outputs = action_space.n
-            self.dist = Categorical(self.network.output_size, num_outputs)
-        elif action_space.__class__.__name__ == "Box":
-            num_outputs = action_space.shape[0]
-            self.dist = DiagGaussian(self.network.output_size, num_outputs)
-        else:
-            raise NotImplementedError
-
-        self.model_type = model_type
-
-    @property
-    def is_recurrent(self):
-        return self.network.is_recurrent
-
-    @property
-    def rec_state_size(self):
-        """Size of rnn_hx."""
-        return self.network.rec_state_size
-
-    def forward(self, inputs, rnn_hxs, masks, extras):
-        #Ming
-        # print(f"+++++++++++++++++++++++++++++++++++extras is {extras}")
-        extras = None
-        # print(f"+++++++++++++++++++++++++++++++++++ fix extras is {extras}")
-        if extras is None:
-            return self.network(inputs, rnn_hxs, masks)
-        else:
-            return self.network(inputs, rnn_hxs, masks, extras)
-
-    # def act(self, inputs, rnn_hxs, masks, extras=None, deterministic=False):
-    #     #Ming
-    #     extras = None
-    #     value, actor_features, rnn_hxs = self(inputs, rnn_hxs, masks, extras)
-    #     dist = self.dist(actor_features)
-
-    #     if deterministic:
-    #         action = dist.mode()
-    #     else:
-    #         action = dist.sample()
-
-    #     action_log_probs = dist.log_probs(action)
-
-    #     # April 8 Ming
-    #     # return value, action, action_log_probs, rnn_hxs
-    #     return value, action, action_log_probs, rnn_hxs, dist
-
-    # April 10 Ming 3action
-    # def act(self, inputs, rnn_hxs, masks, extras=None, deterministic=False, true_action = None):
-    #     #Ming
-    #     extras = None
-    #     value, actor_features, rnn_hxs = self(inputs, rnn_hxs, masks, extras)
-    #     dist = self.dist(actor_features)
-
-    #     if deterministic:
-    #         action = dist.mode()
-    #     else:
-    #         action = dist.sample()
-    #     cuda0 = torch.device('cuda:0')
-    #     print(f"LOG: action, {action}, {type(action)}, {action.size()}")
-    #     if true_action is not None:
-    #         if true_action[0] is not None:
-    #             # action[0].fill_(true_action[0])
-    #             action.index_fill_(1, torch.tensor([0]).to(cuda0), true_action[0])
-    #         if true_action[1] is not None:
-    #             # action[1].fill_(true_action[1])
-    #             action.index_fill_(1, torch.tensor([1]).to(cuda0), true_action[1])
-    #         if true_action[2] is not None:
-    #             # action[2].fill_(true_action[2])
-    #             action.index_fill_(1, torch.tensor([2]).to(cuda0), true_action[2])
-    #     print(f"LOG: action new, {action}, {type(action)}")
-    #     action_log_probs = dist.log_probs(action)
-
-    #     return value, action, action_log_probs, rnn_hxs
-
-    # April 10 Ming 1action
-    def act(self, inputs, rnn_hxs, masks, extras=None, deterministic=False, true_action = None):
-        #Ming
-        extras = None
-        value, actor_features, rnn_hxs = self(inputs, rnn_hxs, masks, extras)
-        dist = self.dist(actor_features)
-
-        if deterministic:
-            action = dist.mode()
-        else:
-            action = dist.sample()
-
-        if true_action is not None: # help
-            action.fill_(true_action)
-
-        action_log_probs = dist.log_probs(action)
-
-        return value, action, action_log_probs, rnn_hxs
-
-
-    def get_value(self, inputs, rnn_hxs, masks, extras=None):
-        #Ming
-        extras = None
-        value, _, _ = self(inputs, rnn_hxs, masks, extras)
-        return value
-
-    def evaluate_actions(self, inputs, rnn_hxs, masks, action, extras=None):
-        #Ming
-        extras = None
-        value, actor_features, rnn_hxs = self(inputs, rnn_hxs, masks, extras)
-        dist = self.dist(actor_features)
-
-        action_log_probs = dist.log_probs(action)
-        dist_entropy = dist.entropy().mean()
-
-        return value, action_log_probs, dist_entropy, rnn_hxs
-
-
-class RL_Policy2(nn.Module):
-
-    def __init__(self, obs_shape, action_space, model_type=0,
-                 base_kwargs=None):
-
-        super(RL_Policy2, self).__init__()
         if base_kwargs is None:
             base_kwargs = {}
 
