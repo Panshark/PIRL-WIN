@@ -143,32 +143,3 @@ python main_wireless_mode_March13_done_new.py --train_local 0 --train_slam 0 --l
 
 # switch to verify mode
 git status 
-# if on the branch verify then done, else 
-git checkout verify
-
-# March tx=7 
-python main_wireless_mode_March13_done_new.py --train_local 0 --train_slam 0 --load_local pretrained_models/model_best.local --load_slam pretrained_models/model_best.slam --exp_name March14_7_lr1e-4 --max_episode_length 180 --num_global_steps 6 --num_local_steps 10 --ppo_epoch 8 --num_mini_batch 1 --global_hidden_size 7 --use_recurrent_global 1 --global_lr 1e-4 --seed 42
-# pretrained_models
-python main_wireless_mode_March13_done_new.py --train_local 0 --train_slam 0 --load_global pretrained_models/model_best.global.1898 --load_local pretrained_models/model_best.local --load_slam pretrained_models/model_best.slam --exp_name March14_Adrian_8_lr1e-4 --max_episode_length 180 --num_global_steps 6 --num_local_steps 10 --ppo_epoch 8 --num_mini_batch 1 --global_hidden_size 7 --use_recurrent_global 1 --global_lr 1e-4 --seed 42
-
-# no pretrain 
-python main_wireless_mode_March13_done_new.py --train_local 0 --train_slam 0  --load_local pretrained_models/model_best.local --load_slam pretrained_models/model_best.slam --exp_name March14_Adrian_8_lr1e-4 --max_episode_length 180 --num_global_steps 6 --num_local_steps 10 --ppo_epoch 8 --num_mini_batch 1 --global_hidden_size 7 --use_recurrent_global 1 --global_lr 1e-4 --seed 42
-
-python main_wireless_mode_March13_done_new.py --train_local 0 --train_slam 0 --load_local pretrained_models/model_best.local --load_slam pretrained_models/model_best.slam --exp_name March13_Bowlus_4_1e-4 --max_episode_length 180 --num_global_steps 6 --num_local_steps 10 --ppo_epoch 8 --num_mini_batch 1 --global_hidden_size 7 --use_recurrent_global 1 --global_lr 1e-4 --seed 42
-
-python main_wireless_mode_March13_done_new.py --train_local 0 --train_slam 0 --load_local pretrained_models/model_best.local --load_slam pretrained_models/model_best.slam --exp_name March15_Bowlus_6_lr1e-4 --max_episode_length 180 --num_global_steps 6 --num_local_steps 10 --ppo_epoch 8 --num_mini_batch 1 --global_hidden_size 7 --use_recurrent_global 1 --global_lr 1e-4 --seed 42
-
-python main_wireless_mode_March17_reward.py --train_local 0 --train_slam 0 --load_local pretrained_models/model_best.local --load_slam pretrained_models/model_best.slam --exp_name March17_Adrian_7_1e-4 --max_episode_length 360 --num_global_steps 6 --num_local_steps 10 --ppo_epoch 8 --num_mini_batch 1 --global_hidden_size 7 --use_recurrent_global 1 --global_lr 1e-4 --seed 42 --sim_gpu_id 1 --num_processes_on_first_gpu 0 --auto_gpu_config 0
-
-
-# March 18
-python main_wireless_mode_March18_link_state.py --train_local 0 --train_slam 0 --load_local pretrained_models/model_best.local --load_slam pretrained_models/model_best.slam --exp_name March18_new_Adrian_8_1e-5 --max_episode_length 360 --num_global_steps 6 --num_local_steps 10 --ppo_epoch 8 --num_mini_batch 1 --global_hidden_size 7 --use_recurrent_global 1 --global_lr 1e-5 --seed 42 --sim_gpu_id 1 --num_processes_on_first_gpu 0 --auto_gpu_config 0
-
-
-
-#############3
-(base) larx@larx-lambda:/data/y2lchong/tmp/dump$ mv /data/y2lchong/tmp/dump/March15_Bowlus_6_lr1e-4/ /media/larx/s.s1/dump/March15_Bowlus_6_lr1e-4/ 
-(base) larx@larx-lambda:/data/y2lchong/tmp/dump$ 
-################################
-
-
