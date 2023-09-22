@@ -1,7 +1,7 @@
 # PIRL-WIN
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
-## Source code for [*Self-Adaptive Driving in Nonstationary Environments through  Conjectural Online Lookahead Adaptation.*]([https://github.com/Panshark/COLA/blob/main/icra_colav3.pdf](https://github.com/Panshark/PIRL-WIN/blob/main/docs/Zero-Shot_Wireless_Indoor_Navigation_through_Physics-Informed_Reinforcement_Learning.pdf)) 
+## Source code for [*Zero-Shot Wireless Indoor Navigation through Physics-Informed Reinforcement Learning.*]([https://github.com/Panshark/PIRL-WIN/blob/main/docs/Zero-Shot_Wireless_Indoor_Navigation_through_Physics-Informed_Reinforcement_Learning.pdf](https://github.com/Panshark/PIRL-WIN/blob/main/docs/Zero-Shot_Wireless_Indoor_Navigation_through_Physics-Informed_Reinforcement_Learning.pdf)) 
 
 [![standard-readme compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
