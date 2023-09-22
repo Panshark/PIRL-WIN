@@ -155,10 +155,19 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->
 <!-- markdownlint-disable -->
+
+<table>
+  <tr>
+    
+  </tr>
+</table>
+
 <table>
   <tbody>
     <tr>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/MingshengYin"><img src="https://avatars.githubusercontent.com/u/49216072?v=4?s=100" width="100px;" alt="MINGSHENG YIN"/><br /><sub><b>MINGSHENG YIN</b></sub></a><br /><a href="#data-MingshengYin" title="Data">🔣</a> <a href="https://github.com/Panshark/PIRL-WIN/commits?author=MingshengYin" title="Code">💻</a> <a href="https://github.com/Panshark/PIRL-WIN/issues?q=author%3AMingshengYin" title="Bug reports">🐛</a> <a href="#ideas-MingshengYin" title="Ideas, Planning, & Feedback">🤔</a> <a href="#research-MingshengYin" title="Research">🔬</a> <a href="#example-MingshengYin" title="Examples">💡</a></td>
+	    <td align="center"><a href="https://github.com/Panshark"><img src="https://avatars.githubusercontent.com/u/71244619?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Haozhe Lei</b></sub></a><br /><a href="https://github.com/Panshark/Attack_metaRL/commits?author=Panshark" title="Code">💻</a> <a href="#data-Panshark" title="Data">🔣</a> <a href="https://github.com/Panshark/Attack_metaRL/commits?author=Panshark" title="Documentation">📖</a> <a href="#ideas-Panshark" title="Ideas, Planning, & Feedback">🤔</a> <a href="#maintenance-Panshark" title="Maintenance">🚧</a> <a href="#projectManagement-Panshark" title="Project Management">📆</a> <a href="https://github.com/Panshark/Attack_metaRL/pulls?q=is%3Apr+reviewed-by%3APanshark" title="Reviewed Pull Requests">👀</a> <a href="#design-Panshark" title="Design">🎨</a></td>
+    <td align="center"><a href="https://engineering.nyu.edu/student/tao-li-0"><img src="https://avatars.githubusercontent.com/u/46550706?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Tao Li</b></sub></a><br /><a href="#design-TaoLi-NYU" title="Design">🎨</a> <a href="#eventOrganizing-TaoLi-NYU" title="Event Organizing">📋</a> <a href="#ideas-TaoLi-NYU" title="Ideas, Planning, & Feedback">🤔</a> <a href="#data-TaoLi-NYU" title="Data">🔣</a> <a href="#content-TaoLi-NYU" title="Content">🖋</a> <a href="#question-TaoLi-NYU" title="Answering Questions">💬</a></td>
+      <td align="center"><a href="https://github.com/MingshengYin"><img src="https://avatars.githubusercontent.com/u/49216072?v=4?s=100" width="100px;" alt="MINGSHENG YIN"/><br /><sub><b>MINGSHENG YIN</b></sub></a><br /><a href="#data-MingshengYin" title="Data">🔣</a> <a href="https://github.com/Panshark/PIRL-WIN/commits?author=MingshengYin" title="Code">💻</a> <a href="https://github.com/Panshark/PIRL-WIN/issues?q=author%3AMingshengYin" title="Bug reports">🐛</a> <a href="#ideas-MingshengYin" title="Ideas, Planning, & Feedback">🤔</a> <a href="#research-MingshengYin" title="Research">🔬</a> <a href="#example-MingshengYin" title="Examples">💡</a><a href="#design-MingshengYin" title="Design">🎨</a></td>
     </tr>
   </tbody>
 </table>
