@@ -13,7 +13,8 @@ The structure of Neural-SLAM is based on [Neural-SLAM](https://devendrachaplot.g
 ## Table of Contents
 
 - [Background](#background)
-- [Install](#install)
+- [Installing Dependencies](#Installing Dependencies)
+- [Setup](#Setup)
 - [Usage](#usage)
 - [References](#references)
 	- [Citing](#citing)
