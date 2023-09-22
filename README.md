@@ -1,4 +1,7 @@
 # PIRL-WIN
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
 ## Source code for [*Self-Adaptive Driving in Nonstationary Environments through  Conjectural Online Lookahead Adaptation.*]([https://github.com/Panshark/COLA/blob/main/icra_colav3.pdf](https://github.com/Panshark/PIRL-WIN/blob/main/docs/Zero-Shot_Wireless_Indoor_Navigation_through_Physics-Informed_Reinforcement_Learning.pdf)) 
 
 [![standard-readme compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
@@ -153,10 +156,11 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <!-- prettier-ignore-start -->
 <!-- markdownlint-disable -->
 <table>
-  <tr>
-    <td align="center"><a href="https://github.com/Panshark"><img src="https://avatars.githubusercontent.com/u/71244619?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Haozhe Lei</b></sub></a><br /><a href="https://github.com/Panshark/Attack_metaRL/commits?author=Panshark" title="Code">💻</a> <a href="#data-Panshark" title="Data">🔣</a> <a href="https://github.com/Panshark/Attack_metaRL/commits?author=Panshark" title="Documentation">📖</a> <a href="#ideas-Panshark" title="Ideas, Planning, & Feedback">🤔</a> <a href="#maintenance-Panshark" title="Maintenance">🚧</a> <a href="#projectManagement-Panshark" title="Project Management">📆</a> <a href="#question-Panshark" title="Answering Questions">💬</a> <a href="https://github.com/Panshark/Attack_metaRL/pulls?q=is%3Apr+reviewed-by%3APanshark" title="Reviewed Pull Requests">👀</a> <a href="#design-Panshark" title="Design">🎨</a></td>
-    <td align="center"><a href="https://engineering.nyu.edu/student/tao-li-0"><img src="https://avatars.githubusercontent.com/u/46550706?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Tao Li</b></sub></a><br /><a href="#design-TaoLi-NYU" title="Design">🎨</a> <a href="#eventOrganizing-TaoLi-NYU" title="Event Organizing">📋</a> <a href="#ideas-TaoLi-NYU" title="Ideas, Planning, & Feedback">🤔</a> <a href="#data-TaoLi-NYU" title="Data">🔣</a> <a href="#content-TaoLi-NYU" title="Content">🖋</a> <a href="#question-TaoLi-NYU" title="Answering Questions">💬</a></td>
-  </tr>
+  <tbody>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/MingshengYin"><img src="https://avatars.githubusercontent.com/u/49216072?v=4?s=100" width="100px;" alt="MINGSHENG YIN"/><br /><sub><b>MINGSHENG YIN</b></sub></a><br /><a href="#data-MingshengYin" title="Data">🔣</a> <a href="https://github.com/Panshark/PIRL-WIN/commits?author=MingshengYin" title="Code">💻</a> <a href="https://github.com/Panshark/PIRL-WIN/issues?q=author%3AMingshengYin" title="Bug reports">🐛</a> <a href="#ideas-MingshengYin" title="Ideas, Planning, & Feedback">🤔</a> <a href="#research-MingshengYin" title="Research">🔬</a> <a href="#example-MingshengYin" title="Examples">💡</a></td>
+    </tr>
+  </tbody>
 </table>
 
 <!-- markdownlint-restore -->
@@ -169,3 +173,16 @@ This project follows the [all-contributors](https://github.com/all-contributors/
 ## License
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/Panshark/PIRL-WIN/blob/main/LICENSE) [MIT](https://github.com/Panshark/PIRL-WIN/blob/main/LICENSE) © Haozhe Lei
+
+## Contributors ✨
+
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
