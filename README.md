@@ -13,8 +13,8 @@ The structure of Neural-SLAM is based on [Neural-SLAM](https://devendrachaplot.g
 ## Table of Contents
 
 - [Background](#background)
-- [Installing Dependencies](#Installing Dependencies)
-- [Setup](#Setup)
+- [Dependencies](#dependencies)
+- [Setup](#setup)
 - [Usage](#usage)
 - [References](#references)
 	- [Citing](#citing)
@@ -31,7 +31,7 @@ The growing focus on indoor robot navigation utilizing wireless signals has stem
 
 
 
-## Installing Dependencies
+## Dependencies
 We use earlier versions of [habitat-sim](https://github.com/facebookresearch/habitat-sim) and [habitat-api](https://github.com/facebookresearch/habitat-api). The specific commits are mentioned below.
 
 Installing habitat-sim:
