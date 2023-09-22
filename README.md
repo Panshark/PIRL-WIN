@@ -1,13 +1,24 @@
-# Active Neural SLAM
-This is a PyTorch implementation of the ICLR-20 paper:
+# PIRL-WIN
+## Source code for [*Self-Adaptive Driving in Nonstationary Environments through  Conjectural Online Lookahead Adaptation.*](https://github.com/Panshark/COLA/blob/main/icra_colav3.pdf)
+A3C model is original implementated by [Palanisamy](https://github.com/PacktPublishing/Hands-On-Intelligent-Agents-with-OpenAI-Gym) in Chapter 8, the structure of classifer is based on [Rashi Sharma](https://medium.com/swlh/natural-image-classification-using-resnet9-model-6f9dc924cd6d). 
 
-[Learning To Explore Using Active Neural SLAM](https://openreview.net/pdf?id=HklXn1BKDH)<br />
-Devendra Singh Chaplot, Dhiraj Gandhi, Saurabh Gupta, Abhinav Gupta, Ruslan Salakhutdinov<br />
-Carnegie Mellon University, Facebook AI Research, UIUC
+[![standard-readme compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors-)
 
-Project Website: https://devendrachaplot.github.io/projects/Neural-SLAM
+The structure of Neural-SLAM is based on [Neural-SLAM](https://devendrachaplot.github.io/projects/Neural-SLAM).
 
-![example](./docs/example.gif)
+## Table of Contents
+
+- [Background](#background)
+- [Install](#install)
+- [Usage](#usage)
+- [References](#references)
+	- [Citing](#citing)
+- [Maintainers](#maintainers)
+- [Contributing](#contributing)
+	- [Contributors](#contributors)
+- [License](#license)
 
 ### Overview:
 The Active Neural SLAM model consists of three modules: a Global Policy, a Local Policy and a Neural SLAM Module. 
