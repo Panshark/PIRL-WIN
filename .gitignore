@@ -135,3 +135,5 @@ dmypy.json
 data
 tmp
 tmp_ming
+ming_codes
+.ming_codes
